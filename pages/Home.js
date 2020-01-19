@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import UserIcons from 'react-native-vector-icons/Foundation'
+import Loading from '../pages/Loading'
 
 const images = [
     require('../assets/images/kids/image1.jpeg'),
@@ -19,7 +21,9 @@ class Home extends Component {
 
     constructor(props){
         super(props);
-        this.state = {}
+        this.state = {
+            isLoading: false
+        }
     }
 
     handleRedirection = (redirectedPage)=>{
@@ -27,6 +31,11 @@ class Home extends Component {
     }
 
     render() {
+
+        
+        if(this.state.isLoading){
+            return ( <Loading></Loading> );
+        }
         return (
             <View  style={styles.container } >
                 <View style={styles.innerContainer1}>
@@ -52,10 +61,10 @@ class Home extends Component {
                     <View style={styles.categories} >
                         <TouchableOpacity style={styles.tabs} onPress={()=>this.handleRedirection('Kids')}> 
                             <View style={styles.innerTab}>
-                                <Text style={styles.text}> Kids</Text>   
+                                <Text style={styles.text} > Kids</Text>   
                             </View>
                             <View style={styles.innerTab}>
-                                <Text style={styles.text}> Kids</Text>   
+                                <UserIcons name="torsos-male-female" size={40} style={{padding: 10}} />
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.tabs} onPress={()=>this.handleRedirection('Men')}>
@@ -63,7 +72,7 @@ class Home extends Component {
                                 <Text style={styles.text}> Men</Text>   
                             </View>
                             <View style={styles.innerTab}>
-                                <Text style={styles.text}> Men</Text>   
+                                <UserIcons name="torso" size={50} style={{padding: 10}} />
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.tabs} onPress={()=>this.handleRedirection('Women')}>
@@ -71,7 +80,7 @@ class Home extends Component {
                                 <Text style={styles.text}> Women</Text>   
                             </View>
                             <View style={styles.innerTab}>
-                                <Text style={styles.text}> Women</Text>   
+                                <UserIcons name="torso-female" size={50} style={{padding: 10}} />
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -80,6 +89,7 @@ class Home extends Component {
         );
     }
 }
+
 export default Home;
 
 const styles = StyleSheet.create({
@@ -122,7 +132,8 @@ const styles = StyleSheet.create({
         borderWidth: 1  
     },
     text:{
-        fontSize: 30
+        fontSize: 30,
+        padding: 10
     }
 
 });
