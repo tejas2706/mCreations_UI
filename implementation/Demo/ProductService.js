@@ -1,5 +1,6 @@
 const KidsDummyData = [
     {
+        id:1,
         name: "Tshirt",
         price: 200,
         quantity: 10,
@@ -7,6 +8,7 @@ const KidsDummyData = [
         img_src: "../../assets/images/kids/image1.jpeg"
     },
     {
+        id:2,
         name: "Shirt",
         price: 300,
         quantity: 23,
@@ -14,6 +16,7 @@ const KidsDummyData = [
         img_src: "../../assets/images/kids/image2.jpeg"
     },
     {
+        id:3,
         name: "Jeans",
         price: 250,
         quantity: 10,

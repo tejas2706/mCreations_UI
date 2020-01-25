@@ -1,9 +1,13 @@
 import React from 'react';
 import Route from './route';
+import {Provider} from 'react-redux'
+import store from './redux/store'
 
 const App = () => {
     return (
-    <Route />
+        <Provider store={store}>
+            <Route />
+        </Provider>
     );
 };
 
