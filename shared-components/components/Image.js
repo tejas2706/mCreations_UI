@@ -13,11 +13,3 @@ class Image extends Component {
     }
 }
 export default Image;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-});

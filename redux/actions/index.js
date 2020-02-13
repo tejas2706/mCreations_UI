@@ -7,3 +7,7 @@ exports.removeFromCart = (productId)=>({
     type: "REMOVE_FROM_CART", 
     payload: productId
 })
+
+exports.resetCart = () =>({
+    type: "RESET_CART"
+})

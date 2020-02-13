@@ -36,4 +36,10 @@ export default class ProductService {
         // Database would contain products with a field as type that can be an enum [Kids, Men, Women]
         return Promise.resolve(KidsDummyData);
     }
+
+    placeOrder(){
+        //API request to place order 
+
+        return Promise.resolve({ "success": true })
+    }
 }

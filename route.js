@@ -8,6 +8,8 @@ import Men from './pages/Men';
 import Women from './pages/Women';
 import UnderConstruction from './pages/UnderConstruction'
 import Error from './pages/Error'
+import Cart from './pages/Cart'
+import OrderDetails from './pages/OrderDetails'
 
 const Navigation = createStackNavigator({
     "Login": {screen: Login},
@@ -15,7 +17,8 @@ const Navigation = createStackNavigator({
     "Kids": {screen: Kids},
     "Men": {screen: UnderConstruction},
     "Women": {screen: Error},
-    
+    "Cart": {screen: Cart},
+    "OrderDetails": {screen: OrderDetails}
 })
 
 export default createAppContainer(Navigation);

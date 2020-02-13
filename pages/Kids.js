@@ -4,15 +4,18 @@ import {
     Text,
     StyleSheet,
     Image,
-    Alert
+    Alert,
+    Button,
+    TouchableOpacity
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Cards } from '../shared-components';
+import { Cards, FloatingButton } from '../shared-components';
 import Loading from "./Loading";
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { addToCart, removeFromCart } from "../redux/actions";
 // import { Image } from '../shared-components'
+import CartPage from './Cart';
 
 const injector = require("../injector")
 
@@ -48,8 +51,6 @@ class Kids extends Component {
     }
 
     renderIcon = (product) => {
-        // console.warn(props)
-        // let filtered = []
         let filtered = this.props.cartItems.filter((x)=> { return x.id == product.id }); 
         if( filtered.length <= 0){
             return (
@@ -87,9 +88,14 @@ class Kids extends Component {
                     </View>
                 </View>
             )
-    }
+        }
         return fields;
     }
+
+    // FIXME: Not rendering modal as of now.. will try to fix this
+    // renderModal = ()=>{
+    //     return <CartPage modalVisible={true}></CartPage>
+    // }
 
     render() {
 
@@ -99,20 +105,27 @@ class Kids extends Component {
             )
         }
         return (
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
                 <View style={styles.title}>
                     <Text style={styles.text}> KIDS </Text>
-                    <Icon name = "search" size={30} style={{...styles.cartIcon,paddingRight:20}} ></Icon>
+                    <Icon name = "search" size={30} style={styles.searchIcon} ></Icon>
                 </View>
-                    {this.renderFields()}
-                    {/* <Cards list={this.state.productsList} /> */}
-            </ScrollView>
+                <View style={styles.scrollContainer}>
+                    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+                        <View>
+                            {this.renderFields()}
+                            {/* <Cards fieldsToRender={this.state.productsList} /> */}
+                        </View>
+                    </ScrollView>
+                    {/* <Cart onPress={this.renderModal}></Cart> */}
+                    <FloatingButton iconName={"add-shopping-cart"} onPress={()=> this.props.navigation.navigate("Cart",{lastPage: "Kids"})}></FloatingButton>
+                </View>
+            </View>
         );
     }
 }
 
 const mapStateToProps =  (state)=>{
-    console.warn(state)
     return {
         cartItems: state
     }
@@ -128,8 +141,15 @@ const mapDispatchToProps = (dispatch)=>{
 export default connect(mapStateToProps,mapDispatchToProps)(Kids);
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
+    container:{
+        flex: 1,
+        justifyContent:"space-evenly"
+    },
+    title:{
+        flex: 1,
+    },
+    scrollContainer:{
+        flex: 10
     },
     title:{
         flex:1,
@@ -166,8 +186,26 @@ const styles = StyleSheet.create({
     text:{
         fontSize: 30
     },
-    // cartIcon:{
+    searchIcon:{
+        paddingRight:20,
+    },
+    // cartbutton:{
+    //     flex:1,
+    //     flexDirection: "row",
     //     paddingRight:20,
-    //     paddingTop: 20
-    // }
+    //     justifyContent: "flex-end"
+    // },
+    // floatButton:{
+    //     borderWidth:1,
+    //     borderColor:'rgba(0,0,0,0.2)',
+    //     alignItems:'center',
+    //     justifyContent:'center',
+    //     width:70,
+    //     position: 'absolute',                                          
+    //     bottom: 10,                                                    
+    //     right: 10,
+    //     height:70,
+    //     backgroundColor:'blue',
+    //     borderRadius:100,
+    //     }
 });

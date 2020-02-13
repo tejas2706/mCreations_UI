@@ -4,8 +4,13 @@ const cartItems = (state=[], action)=>{
             return [...state,action.payload]
 
         case "REMOVE_FROM_CART":
-            return state.filter( cartItem =>  cartItem.id !== action.payload)
-            break;
+            let index = state.findIndex(cartItem => cartItem.id == action.payload);
+            state.splice(index,1)
+            return [...state];
+            // return state.splice(state.find((cartItem,i)))
+            // return state.filter( cartItem =>  cartItem.id !== _action.payload)
+        case "RESET_CART": 
+            state=[]
     }
     return state;
 }
