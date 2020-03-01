@@ -1,3 +1,4 @@
 node_modules
 package-lock.json
-android
+android/.gradel
+android/app/build
