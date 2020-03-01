@@ -1,17 +1,19 @@
 import React, { Component } from "react";
-import { 
+import {
     View,
     Text,
     StyleSheet,
     Image,
     Alert,
     Button,
-    TouchableOpacity
+    TouchableOpacity,
+    
 } from "react-native";
+import Modal from "react-native-modal";
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Cards, FloatingButton } from '../shared-components';
 import Loading from "./Loading";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { addToCart, removeFromCart } from "../redux/actions";
 // import { Image } from '../shared-components'
@@ -21,70 +23,82 @@ const injector = require("../injector")
 
 class Kids extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
-            productsList : [],
+            productsList: [],
             isLoading: false,
-            cartState:[]
+            cartState: [],
+            modalVisible: false
         }
     }
 
-    async UNSAFE_componentWillMount(){
-        this.setState({isLoading: true})
+    async UNSAFE_componentWillMount() {
+        this.setState({ isLoading: true })
         await this.fetchProductDetails();
     }
 
-    fetchProductDetails = async ()=>{
+    fetchProductDetails = async () => {
         let productsList = await injector.getProductServiceInst().fetchProductDetails();
-        await this.setState({productsList, cartState: new Array(productsList.length)})
+        await this.setState({ productsList, cartState: new Array(productsList.length) })
 
-        this.setState({isLoading: false})
+        this.setState({ isLoading: false })
     }
 
-    handleClick =(index)=>{
-        this.setState((state)=>{
+    handleClick = (index) => {
+        this.setState((state) => {
             state.cartState[index] = 1;
         })
         Alert.alert(String(this.state.cartState[index]))
 
     }
 
-    renderIcon = (product) => {
-        let filtered = this.props.cartItems.filter((x)=> { return x.id == product.id }); 
-        if( filtered.length <= 0){
-            return (
-                <Icon name="add-shopping-cart" size={30} onPress={()=> this.props.addItemToCart(product)}></Icon>
-            );
-        }else{
-            return(
-                <View style={{flex:1, flexDirection: "row", justifyContent: "space-around"}}>
-                    <Icon name="add-circle-outline" size={30} style={{paddingTop:10}} onPress={()=> this.props.addItemToCart(product)}></Icon>
-                    <Text  style = {{fontSize: 30}} >{filtered.length}</Text>
-                    <Icon name="remove-circle-outline" size={30} style={{paddingTop:10}} onPress={()=> this.props.removeFromCart(product.id)}></Icon>
-                </View>
-            );
-        }   
+    handleAdminEdit = (product) => {
+        this.setState({ isModalActive: true,modalVisible: true, productToEdit: product })
     }
 
-    renderFields = ()=> {
+    renderIcon = (product) => {
+        if (true || this.props.isAdmin) {
+            return (
+                <Icon name="edit" onPress={() => this.handleAdminEdit(product)}></Icon>
+            );
+        } else {
+            let filtered = this.props.cartItems.filter((x) => { return x.id == product.id });
+            if (filtered.length <= 0) {
+                return (
+                    <Icon name="add-shopping-cart" size={30} onPress={() => this.props.addItemToCart(product)}></Icon>
+                );
+            } else {
+                return (
+                    <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-around" }}>
+                        <Icon name="add-circle-outline" size={30} style={{ paddingTop: 10 }} onPress={() => this.props.addItemToCart(product)}></Icon>
+                        <Text style={{ fontSize: 30 }} >{filtered.length}</Text>
+                        <Icon name="remove-circle-outline" size={30} style={{ paddingTop: 10 }} onPress={() => this.props.removeFromCart(product.id)}></Icon>
+                    </View>
+                );
+            }
+        }
+    }
+
+    renderFields = () => {
         let productsList = this.state.productsList;
+        console.log("Kids -> renderFields -> productsList", productsList)
         let length = productsList.length;
         let fields = [];
-        for(let i = 0; i < length; i++){
+        for (let i = 0; i < length; i++) {
             fields.push(
                 <View style={styles.cards}>
                     <View style={styles.imgView}>
                         <Image source={require('../assets/images/kids/image1.jpeg')} style={styles.img}></Image>
                     </View>
                     <View style={styles.details}>
-                        <Text>{productsList[i].name}</Text>
+                        <Text>{productsList[i].productName}</Text>
                         <Text>{productsList[i].price}</Text>
-                        <Text>{productsList[i].quantity}</Text>
-                        <Text>{productsList[i].brand}</Text>
+                        <Text>{productsList[i].availableQuantity}</Text>
+                        <Text>{productsList[i].brandName}</Text>
                     </View>
                     <View style={styles.icon}>
-                        {this.renderIcon(productsList[i])}                     
+                        {this.renderIcon(productsList[i])}
                     </View>
                 </View>
             )
@@ -99,95 +113,130 @@ class Kids extends Component {
 
     render() {
 
-        if(this.state.isLoading){
+        if (this.state.isLoading) {
             return (
                 <Loading />
             )
+        }else if(this.state.isModalActive){
+            return(
+                <View style={{ borderWidth: 1, borderColor: 'red'}}>
+                    <Modal
+                        animationType="slide"
+                        transparent={false}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
+                            this.setState({isModalActive: false,modalVisible: false})
+                        }}>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center'}}>
+                                <View style={{
+                                        width: 400,
+                                        height: 400,
+                                        borderWidth: 1,
+                                        borderRadius: 15,
+                                        alignItems: "center"}}>
+                                            <Text>Product Name: </Text>
+                                            <TextInput>{this.state.productToEdit['productName']}</TextInput>
+                                            <Text>Price: </Text>
+                                            <TextInput>{this.state.productToEdit['price']}</TextInput>
+                                            <Text>Availability: </Text>
+                                            <TextInput>{this.state.productToEdit['availableQuantity']}</TextInput>
+                                            <Text>Brand Name: </Text>
+                                            <TextInput>{this.state.productToEdit['brandName']}</TextInput>
+                                </View>
+                        </View>
+                    </Modal>
+                </View>
+            );
         }
         return (
             <View style={styles.container}>
                 <View style={styles.title}>
                     <Text style={styles.text}> KIDS </Text>
-                    <Icon name = "search" size={30} style={styles.searchIcon} ></Icon>
+                    <Icon name="search" size={30} style={styles.searchIcon} ></Icon>
                 </View>
                 <View style={styles.scrollContainer}>
-                    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                         <View>
                             {this.renderFields()}
                             {/* <Cards fieldsToRender={this.state.productsList} /> */}
                         </View>
                     </ScrollView>
                     {/* <Cart onPress={this.renderModal}></Cart> */}
-                    <FloatingButton iconName={"add-shopping-cart"} onPress={()=> this.props.navigation.navigate("Cart",{lastPage: "Kids"})}></FloatingButton>
+                    <FloatingButton iconName={"add-shopping-cart"} onPress={() => this.props.navigation.navigate("Cart", { lastPage: "Kids" })}></FloatingButton>
                 </View>
             </View>
         );
     }
 }
 
-const mapStateToProps =  (state)=>{
+const mapStateToProps = (state) => {
     return {
-        cartItems: state
+        cartItems: state.cartItems,
+        token: state.token
     }
 }
 
-const mapDispatchToProps = (dispatch)=>{
+const mapDispatchToProps = (dispatch) => {
     return {
         addItemToCart: (product) => dispatch(addToCart(product)),
         removeFromCart: (productId) => dispatch(removeFromCart(productId))
     }
 }
 // mapDispatchToProps
-export default connect(mapStateToProps,mapDispatchToProps)(Kids);
+export default connect(mapStateToProps, mapDispatchToProps)(Kids);
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
-        justifyContent:"space-evenly"
+        justifyContent: "space-evenly"
     },
-    title:{
+    title: {
         flex: 1,
     },
-    scrollContainer:{
+    scrollContainer: {
         flex: 10
     },
-    title:{
-        flex:1,
+    title: {
+        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         paddingTop: 20,
         paddingLeft: 20
     },
-    cards:{
-        flex:1,
+    cards: {
+        flex: 1,
         flexDirection: "row",
-        justifyContent:"space-evenly",
+        justifyContent: "space-evenly",
         borderWidth: 1
     },
-    imgView:{
-        flex:1,
+    imgView: {
+        flex: 1,
         padding: 10
     },
-    img:{
+    img: {
         width: 50,
         height: 50,
     },
-    details:{
-        flex:2
+    details: {
+        flex: 2
     },
-    icon:{
-        flex:1,
+    icon: {
+        flex: 1,
         flexDirection: "row",
         justifyContent: "flex-end",
         paddingTop: 10,
         paddingRight: 10
 
     },
-    text:{
+    text: {
         fontSize: 30
     },
-    searchIcon:{
-        paddingRight:20,
+    searchIcon: {
+        paddingRight: 20,
     },
     // cartbutton:{
     //     flex:1,
