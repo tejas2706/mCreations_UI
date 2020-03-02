@@ -4,14 +4,29 @@ import {
     StyleSheet,
     Text,
     ImageBackground
+    Alert,
 } from "react-native";
 
 import { Button, TextInput } from '../shared-components'
+import { connect } from "react-redux";
+const {addTokenToStore} = require('../redux/actions')
 
+const injector = require('../injector')
 class Login extends Component {
 
-    handleClick = () => {
-        this.props.navigation.navigate("Home")
+    handleClick = async ()=>{
+        try{
+            let response = await injector.getAuthenticationServiceInst().login({username: this.state.username, password: this.state.password}); 
+            if(response.token){
+                this.props.addToken(response.token)
+                this.props.navigation.navigate("Home")
+            }
+            else
+                throw err;
+        }catch(err){
+            console.log(err)
+            Alert.alert("Login Failed", "Something went wrong, Please check your username/password")
+        }
     }
 
     render() {
@@ -41,7 +56,13 @@ class Login extends Component {
         );
     }
 }
-export default Login;
+
+const mapDispatchToProps = (dispatch)=>{
+    return {
+        addToken: (token) => dispatch(addTokenToStore(token)),
+    }
+}
+export default connect(null,mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
     container: {

@@ -1,26 +1,26 @@
 const KidsDummyData = [
     {
         id:1,
-        name: "Tshirt",
+        productName: "Tshirt",
         price: 200,
-        quantity: 10,
-        brand: "adidas",
+        availableQuantity: 10,
+        brandName: "adidas",
         img_src: "../../assets/images/kids/image1.jpeg"
     },
     {
         id:2,
-        name: "Shirt",
+        productName: "Shirt",
         price: 300,
-        quantity: 23,
-        brand: "Allen Soly",
+        availableQuantity: 23,
+        brandName: "Allen Soly",
         img_src: "../../assets/images/kids/image2.jpeg"
     },
     {
         id:3,
-        name: "Jeans",
+        productName: "Jeans",
         price: 250,
-        quantity: 10,
-        brand: "Levis",
+        availableQuantity: 10,
+        brandName: "Levis",
         img_src: "../../assets/images/kids/image3.jpeg"
     }
 ]

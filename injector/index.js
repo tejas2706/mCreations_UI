@@ -1,5 +1,5 @@
 import AuthenticationService from '../implementation/Demo/AuthenticationService';
-import ProducServiceInst from '../implementation/Demo/ProductService';
+import ProductServiceInst from '../implementation/Demo/ProductService';
 import OrderServiceInst from '../implementation/Demo/OrderService';
 
 exports.getAuthenticationServiceInst = function(){
@@ -7,7 +7,7 @@ exports.getAuthenticationServiceInst = function(){
 }
 
 exports.getProductServiceInst = function(){
-    return new ProducServiceInst("Kids");
+    return new ProductServiceInst("Kids");
 }
 
 exports.getOrderServiceInst = function(){

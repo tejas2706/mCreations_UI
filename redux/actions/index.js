@@ -11,3 +11,8 @@ exports.removeFromCart = (productId)=>({
 exports.resetCart = () =>({
     type: "RESET_CART"
 })
+
+exports.addTokenToStore = (token)=>({
+    type: "ADD_TOKEN",
+    payload: token
+})
