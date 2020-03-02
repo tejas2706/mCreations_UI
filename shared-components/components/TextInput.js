@@ -10,6 +10,7 @@ class TextInputComponent extends Component {
             <TextInput
                 placeholder={this.props.placeholder }
                 onChangeText={this.props.onChangeText}
+                style={this.style}
             ></TextInput>
         );
     }

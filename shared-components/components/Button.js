@@ -16,6 +16,7 @@ class ButtonComponent extends Component {
             <Button
             title={this.props.title}
             onPress={this.props.onClick || this.handleDefaultClick}
+            color={this.props.color}
             >
             </Button>
         );
