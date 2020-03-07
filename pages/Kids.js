@@ -60,7 +60,7 @@ class Kids extends Component {
     renderIcon = (product) => {
         if (true || this.props.isAdmin) {
             return (
-                <Icon name="edit" onPress={() => this.handleAdminEdit(product)}></Icon>
+                <Icon style={{iconSize:20}} name="edit" onPress={() => this.handleAdminEdit(product)}></Icon>
             );
         } else {
             let filtered = this.props.cartItems.filter((x) => { return x.id == product.id });
@@ -92,10 +92,10 @@ class Kids extends Component {
                         <Image source={require('../assets/images/kids/image1.jpeg')} style={styles.img}></Image>
                     </View>
                     <View style={styles.details}>
-                        <Text>{productsList[i].productName}</Text>
-                        <Text>{productsList[i].price}</Text>
-                        <Text>{productsList[i].availableQuantity}</Text>
-                        <Text>{productsList[i].brandName}</Text>
+                        <Text style={{fontSize:20}}>{productsList[i].productName}</Text>
+                        <Text>Price:   Rs.{productsList[i].price}</Text>
+                        <Text>Available Quantity:    {productsList[i].availableQuantity}</Text>
+                        <Text>Brand:   {productsList[i].brandName}</Text>
                     </View>
                     <View style={styles.icon}>
                         {this.renderIcon(productsList[i])}
@@ -222,7 +222,9 @@ const styles = StyleSheet.create({
         height: 50,
     },
     details: {
-        flex: 2
+        flex: 2,
+        flexDirection:"column",
+        // flexWrap:"wrap"
     },
     icon: {
         flex: 1,

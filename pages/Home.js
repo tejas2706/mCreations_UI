@@ -10,6 +10,8 @@ import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import UserIcons from 'react-native-vector-icons/Foundation'
 import Loading from '../pages/Loading'
+import { FloatingButton } from '../shared-components';
+
 
 const images = [
     require('../assets/images/kids/image1.jpeg'),
@@ -38,11 +40,14 @@ class Home extends Component {
         }
         return (
             <View  style={styles.container } >
+
                 <View style={styles.innerContainer1}>
                     <View style={styles.header}>
-                        <Text style={{textAlign: "center", fontSize: 30, padding: 20}}> Free Delivery Over $$$ </Text>
-                        <Icon name = "search" size={30} style={{padding: 20}} ></Icon>
+                        <Text style={{textAlign: "center", fontSize: 30}}> Free Delivery Over $$$ </Text>
+                        <Icon style={{textAlign: "center", fontSize: 30}} name = "search" size={30} ></Icon>
                     </View>
+                </View>
+                <ScrollView style={styles.innerContainer2} contentContainerStyle={{}}>
                     <View style={styles.slider} >
                         <SliderBox 
                             images={images}
@@ -53,11 +58,10 @@ class Home extends Component {
                             sliderBoxHeight={350}
                         />
                     </View>
-                </View>
-                <ScrollView style={styles.innerContainer2} contentContainerStyle={{flexGrow: 1}}>
                     <View style={styles.category}>
-                        <Text style={{fontSize: 40, fontWeight:"bold"}}>Category</Text>
+                        <Text style={{fontSize:35,position:"relative",fontWeight:"bold"}}>Categories</Text>
                     </View>
+                    <ScrollView horizontal={true}>
                     <View style={styles.categories} >
                         <TouchableOpacity style={styles.tabs} onPress={()=>this.handleRedirection('Kids')}> 
                             <View style={styles.innerTab}>
@@ -72,7 +76,7 @@ class Home extends Component {
                                 <Text style={styles.text}> Men</Text>   
                             </View>
                             <View style={styles.innerTab}>
-                                <UserIcons name="torso" size={50} style={{padding: 10}} />
+                                <UserIcons name="torso" size={40} style={{padding: 10}} />
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.tabs} onPress={()=>this.handleRedirection('Women')}>
@@ -80,12 +84,30 @@ class Home extends Component {
                                 <Text style={styles.text}> Women</Text>   
                             </View>
                             <View style={styles.innerTab}>
-                                <UserIcons name="torso-female" size={50} style={{padding: 10}} />
+                                <UserIcons name="torso-female" size={40} style={{padding: 10}} />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.tabs} onPress={()=>this.handleRedirection('Women')}>
+                            <View style={styles.innerTab}>
+                                <Text style={styles.text}> Sports</Text>   
+                            </View>
+                            <View style={styles.innerTab}>
+                                <UserIcons name="torso-female" size={40} style={{padding: 10}} />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    </ScrollView>
+                    <View>
+                        <TouchableOpacity style={styles.tabs} onPress={()=>this.handleRedirection('Women')}>
+                            <View style={styles.innerTab}>
+                                <Text style={styles.text}> Previous Orders </Text>   
                             </View>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
-            </View>       
+                <FloatingButton iconName={"add-shopping-cart"} onPress={() => this.handleRedirection("Cart")}></FloatingButton>
+            </View> 
+
         );
     }
 }
@@ -93,47 +115,96 @@ class Home extends Component {
 export default Home;
 
 const styles = StyleSheet.create({
-    container: {
+    container: { 
+        backgroundColor:'white', 
+        display:"flex",
+        flexDirection: "column",
+        alignContent:"center",
+        justifyContent: 'center',
         flex: 1,
+        // alignItems:'stretch'
     },
     innerContainer1:{
-        flex:1,
+        // flexGrow:0
+        
+        // flex:1,
+        // flexDirection:"column",
+        // justifyContent:"space-around"
     },
     innerContainer2:{
-        flex:1,
-        backgroundColor: "green"
-        
+        // borderWidth:5
+        // flexGrow:2
+        // flex:1,
+        display:"flex"
+        // backgroundColor: "white"
+
     },
     header:{
-        flex:1,
-        backgroundColor: "gray",
+        borderWidth:5,
+        borderColor:"gray",
+        alignItems:"center",
         flexDirection: "row",
-        justifyContent:"space-evenly"
+        justifyContent:"space-around"
+
+        // flex:1,
+        // backgroundColor: "gray",
     },
     slider:{
-        flex:4,
-        borderColor: "black",
-        borderWidth: 3
+        borderWidth:5,
+        borderColor:"black",
+        // height:250
+        // flexGrow:3
+        // flex:2,
+        // paddingRight:60
     },
     category:{
-        flex:1,
-        backgroundColor: "yellow"
+        // borderWidth:10,
+        // borderColor:"yellow",
+        paddingLeft:10
+        // justifyContent:"space-around"
+        // flex:1,
+        // backgroundColor: "white",
+        // paddingLeft:5
     },
     categories:{
-        flex:6,
-        backgroundColor: "white",
+        // borderWidth:10,
+        // borderColor:"red",
+        
+        // flex:6,
+        // backgroundColor: "white",
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        alignItems:"stretch",
+        // flexWrap: "wrap"
+        // alignItems:'stretch'
     },
     tabs:{
-        flex:1,  
+        borderWidth:2,
+        borderColor:"gray",
+        borderRadius:30,
+        // flex:1,  
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingRight: 20,
-        borderColor: "black",
-        borderWidth: 1  
+        // paddingRight: 20,
+        // borderColor: "black",
+        // borderWidth: 1 ,
+        // borderRadius:20,
+        // backgroundColor:"#F3F09C"
     },
-    text:{
-        fontSize: 30,
-        padding: 10
+    text:{ 
+        // borderWidth:1,
+        // borderColor:"green",
+        // position:"relative",
+        fontSize: 40,
+        color:"green"
+        // padding: 10
+    },
+    innerTab:{
+        // borderWidth:10,
+        // borderColor:"blue",
+        alignContent:"center",
+        alignItems:"center"
+        
     }
 
 });
